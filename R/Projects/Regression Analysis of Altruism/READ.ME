@@ -1,1 +1,56 @@
+# Altruism Study R Script (analysis and cleaning) and Analysis report (thesis) 
+
+This repository contains the R script used for data analysis in the study on altruism among medical and business students. The dataset includes responses from students in both fields, and the script performs various analyses to explore the relationship between altruism, demographics, and other factors.
+
+## Files:
+
+- `altruism_analysis.R`: The main R script containing the data preprocessing, analysis, and visualization code.
+- `Provider_Altruism_Medical.csv`: CSV file containing data from medical students.
+- `Provider_Altruism_Business.csv`: CSV file containing data from business students.
+
+## Prerequisites:
+
+Make sure to install the required R packages before running the script. You can install them using the following commands:
+
+```R
+install.packages("ggfortify")
+install.packages("jtools")
+install.packages("interactions")
+```
+
+## Usage:
+
+1. Open the R script (`altruism_analysis.R`) in RStudio or any R environment.
+2. Run the script to perform the data analysis.
+3. Check the generated plots and statistical summaries in the R environment.
+
+## Data:
+
+- The dataset is divided into two parts: medical and business students.
+- Incomplete answers and unnecessary columns are removed during data preprocessing.
+- Numeric transformations are applied to relevant columns for analysis.
+
+## Analysis:
+
+The script performs various analyses, including:
+
+- Descriptive statistics of the dataset.
+- Calculation of means and sums for specific variables.
+- Dummy variable creation for gender, salary indication, and student group.
+- Regression models to explore the relationships between altruism, past altruism, professional altruism, and other factors.
+
+## Results:
+
+The results are visualized through different plots and summarized in regression outputs.
+
+- `models_RQ1.htm`: Regression models exploring three dimensions of altruism based on the study program.
+- `models_RQ2.htm`: Regression models examining the connection of experimental altruism to past altruism and professional altruism.
+- `models_RQ3.htm`: Regression models investigating the factors influencing experimental altruism.
+
+## Subgroup Analysis:
+
+Subgroup analyses are conducted based on medical and business students, as well as their specializations.
+
+- `models_RQsub.htm`: Regression models examining experimental altruism based on preferred medical specialties.
+- `models_SBESpec.htm`: Regression models exploring experimental altruism based on business-related specialties.
 
