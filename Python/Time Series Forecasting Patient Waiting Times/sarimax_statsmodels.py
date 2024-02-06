@@ -54,23 +54,16 @@ std_c = data['number_of_calls_hr'].std()
 data['number_of_calls_hr_n'] = (data['number_of_calls_hr'] - mean_c) / std_c
 
 #number of shifts
-mean_s = data['Number of Shifts'].mean()
-std_s = data['Number of Shifts'].std()
-data['Number of Shifts_normalized'] = (data['Number of Shifts'] - mean_s) / std_s
+____
 
 #outcome
-data['wait_time_hr_av_min'] =  data['wait_time_hr_av_s']/60
-
-mean_wt = data['wait_time_hr_av_min'].mean()
-std_wt = data['wait_time_hr_av_min'].std()
-data['wait_time_average_normalized'] = (data['wait_time_hr_av_min'] - mean_wt) / std_wt
+____
 
 
 
-data = data[['wait_time_average_normalized', 'open', 'Day_-1', 'Day_0', 'Day_1',
-       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-       'Season_3', 'Season_4','number_of_calls_hr_n']]
-#number_of_calls_hr_n, Number of Shifts_normalized optional
+
+
+data = data[['wait_time_average_normalized', ______]]
 
 
 TEST_SIZE = 24*30
@@ -79,9 +72,7 @@ x_train, x_test = np.array(range(train.shape[0])), np.array(range(train.shape[0]
 train.shape, x_train.shape, test.shape, x_test.shape
 
 #if no norm_order and season_order is given - can also be selected manually in form (AR,d,MA)(SAR, D, SMA, season_m)
-modelsx_calls = sm.tsa.statespace.SARIMAX(train[['wait_time_average_normalized']], exog=train[['open', 'Day_-1', 'Day_0', 'Day_1',
-       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-       'Season_3', 'Season_4', 'number_of_calls_hr_n']], order=norm_order,
+modelsx_calls = sm.tsa.statespace.SARIMAX(train[['wait_time_average_normalized']], exog=train[['open',_______]], order=norm_order,
                                  seasonal_order=season_order, trend=None,
                                  measurement_error=False,
                                  time_varying_regression=False,
@@ -114,10 +105,8 @@ result = modelsx_calls.fit()
 
 
 #predict
-#provide the calendar specifications, open/not open, number of calls etc for each hour instead of test in exog=
-prediction = result.predict(exog=test[['open', 'Day_-1', 'Day_0', 'Day_1',
-       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-       'Season_3', 'Season_4','number_of_calls_hr_n']], start=train.shape[0], end=train.shape[0] + TEST_SIZE - 1)
+#provide the ____specifications, open/not open, number of calls etc for each hour instead of test in exog=
+prediction = result.predict(exog=test[['open', _____]], start=train.shape[0], end=train.shape[0] + TEST_SIZE - 1)
 
 
 
@@ -133,9 +122,7 @@ pred1 = denormalize_data(prediction, mean_wt,std_wt)
 #append new data
 #load df_t (new data that we want to append with exog variables)
 #data = pd.read_csv('data_exo.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
-#df_t = df_t[['wait_time_average_normalized', 'open', 'Day_-1', 'Day_0', 'Day_1',
-#       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-#       'Season_3', 'Season_4','number_of_calls_hr_n']]
+#df_t = df_t[['wait_time_average_normalized', 'open', _____]]
 
     #make sure the data follows right after the data used for training the model
 #last_index_df1 = train.index.max()
@@ -144,9 +131,7 @@ pred1 = denormalize_data(prediction, mean_wt,std_wt)
 #subset_df_t = subset_df_t.resample('H').asfreq()
 #subset_df_t = subset_df_t.drop(subset_df_t.index[0]) #get rid of the first observation because it is the same
 
-#result.append(subset_df_t[['wait_time_average_normalized']], exog=subset_df_t[['open', 'Day_-1', 'Day_0', 'Day_1',
-#    'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-#   'Season_3', 'Season_4', 'number_of_calls_hr_n']], refit=False, fit_kwargs=None)
+#result.append(subset_df_t[['wait_time_average_normalized']], exog=subset_df_t[['open', ________]], refit=False, fit_kwargs=None)
 #can change refit to True to refit the model
 
 #denormalize after prediction
@@ -157,7 +142,7 @@ pred1 = denormalize_data(prediction, mean_wt,std_wt)
 
 
 """
-#simulation
+#simulation - Monte Carlo Simulation
 
 import seaborn as sns
 
@@ -170,9 +155,7 @@ exog for adding the exogenous variables
 
 
 #length = 20
-#result.simulate(length, exog = subset_df_t[['open', 'Day_-1', 'Day_0', 'Day_1',
-# 'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-#'Season_3', 'Season_4', 'number_of_calls_hr_n']].tail(length), anchor = "end")
+#result.simulate(length, exog = subset_df_t[['open', _____]].tail(length), anchor = "end")
 
 #end is determined from the train df, on which the model was trained - simulates into teh future
 
@@ -180,9 +163,7 @@ exog for adding the exogenous variables
 samples = []
 length = 24
 for sample in range(20): #specify number of simulations to run
-    samples.append(result.simulate(length, exog = subset_df_t[['open', 'Day_-1', 'Day_0', 'Day_1',
- 'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-'Season_3', 'Season_4', 'number_of_calls_hr_n']].tail(length), anchor = "end"))
+    samples.append(result.simulate(length, exog = subset_df_t[['open', ________]].tail(length), anchor = "end"))
 sns.lineplot(data=samples)
 
 
