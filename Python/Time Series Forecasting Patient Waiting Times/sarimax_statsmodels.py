@@ -1,24 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Jun 13 14:20:44 2023
-
-@author: k.bartekova
-"""
-#from scipy.signal.signaltools import _centered
-#!pip install statsmodels --upgrade
-
-import  scipy.signal.signaltools
-
-def _centered(arr, newsize):
-    # Return the center newsize portion of the array.
-    newsize = np.asarray(newsize)
-    currsize = np.array(arr.shape)
-    startind = (currsize - newsize) // 2
-    endind = startind + newsize
-    myslice = [slice(startind[k], endind[k]) for k in range(len(endind))]
-    return arr[tuple(myslice)]
-
-scipy.signal.signaltools._centered = _centered
 
 import pandas as pd
 import glob
@@ -43,14 +22,11 @@ def forecast_accuracy(forecast, actual):
     me = np.mean(forecast - actual)             # ME
     mae = np.mean(np.abs(forecast - actual))    # MAE
     
-    
     MAE1 = np.mean(np.abs(actual - forecast))
-    
     mpe = np.mean((forecast - actual)/actual)   # MPE
     rmse = np.mean((forecast - actual)**2)**.5  # RMSE
    
     MSE = np.square(np.subtract(actual,forecast)).mean() 
- 
     RMSE1 = math.sqrt(MSE)
     
     corr = np.corrcoef(forecast, actual)[0,1]   # corr
@@ -64,15 +40,12 @@ def forecast_accuracy(forecast, actual):
             'mpe': mpe, 'rmse':rmse, 'RMSE1':RMSE1, 
             'corr':corr, 'minmax':minmax})
 
-
-
-
     
 def denormalize_data(normalized_data, mean, std):
     denormalized_data = (normalized_data * std) + mean
     return denormalized_data
 
-data = pd.read_csv('data_exo.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
+data = pd.read_csv('___exo.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
 
 #normalize data
 #number of calls
@@ -158,7 +131,7 @@ pred1 = denormalize_data(prediction, mean_wt,std_wt)
 
 
 #append new data
-#load df_t (new data that we want to append with exog variables, make sure the variables in it match)
+#load df_t (new data that we want to append with exog variables)
 #data = pd.read_csv('data_exo.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
 #df_t = df_t[['wait_time_average_normalized', 'open', 'Day_-1', 'Day_0', 'Day_1',
 #       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
