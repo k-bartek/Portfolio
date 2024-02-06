@@ -19,14 +19,14 @@ df['datetime'] = pd.to_datetime(df['datetime'])
 df['datetime1'] = pd.to_datetime(df['datetime'])
 
 
-#add calendar data - this part of code was modified from the original by @Esculine
+#add calendar data 
 def add_Feature_Columns(data_frame):
     
     # Add min, hour, day of week (monday = 0) and date
     ____
     # Add season (winter = 1)
     ____
-    # Add holiday as well_day = -1
+    # Add holiday as well (day = -1)
     now = datetime.datetime.now()
     holidays_nl = holidays.Netherlands(years = list(range(2018, now.year+1)))
     data_frame['holiday'] = data_frame['date'].isin(holidays_nl).astype(int)
@@ -44,23 +44,18 @@ df_encoded = pd.get_dummies(df['week_day'], prefix='Day')
 df = pd.concat([df, df_encoded], axis=1)
 
 #season dummies
-df_encoded = pd.get_dummies(df['season'], prefix='Season')
-df = pd.concat([df, df_encoded], axis=1)
+_____
 
 df.set_index('datetime', inplace=True)
 
 #add open
 #create variable open that takes on val 1 when Day_-1 is 1 or Day_5 or Day_6 are 1, or the  time in index is in 00:00:00 - 8:00:00 or 17:00:00-00:00:00
-df['open'] = ((df['Day_-1'] == 1) | (df['Day_5'] == 1) | (df['Day_6'] == 1)) | (
-    ((df.index.time >= pd.to_datetime('00:00:00').time()) & (df.index.time < pd.to_datetime('08:00:00').time())) |
-    ((df.index.time >= pd.to_datetime('17:00:00').time()) & (df.index.time <= pd.to_datetime('23:59:59').time()))
-)
+df['open'] = _______
 df['open'] = df['open'].astype(int)
 
 
-#shifts
-df_i["start_shift"] = pd.to_datetime(df_i["rooster_start_int"], dayfirst = True)
-df_i["end_shift"] = pd.to_datetime(df_i["rooster_eind_int"], dayfirst = True)
+#shifts end and start
+_______
 
 
 #add number of shifts from shift schedules - this part of code was modified from the original code done by @Jackie
