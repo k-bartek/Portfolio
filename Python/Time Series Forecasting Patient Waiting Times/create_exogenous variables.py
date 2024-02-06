@@ -1,27 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 14 16:33:15 2023
-
-@author: k.bartekova
-"""
-
-### use to get exogenous values for future predictions for the dates from intershift df
-
-
-import  scipy.signal.signaltools
-
-#to fix the error in scipy signaltools
-def _centered(arr, newsize):
-    # Return the center newsize portion of the array.
-    newsize = np.asarray(newsize)
-    currsize = np.array(arr.shape)
-    startind = (currsize - newsize) // 2
-    endind = startind + newsize
-    myslice = [slice(startind[k], endind[k]) for k in range(len(endind))]
-    return arr[tuple(myslice)]
-
-scipy.signal.signaltools._centered = _centered
-
 
 import pandas as pd
 import numpy as np
@@ -29,9 +5,6 @@ import datetime
 import holidays
 
 #insert the current intershift df
-df_i = pd.read_csv(r'G:\UU\Machine Learning Wachttijden Spoedpost\Data up to 01-06-23\intershift.csv' , sep=',',
-                     na_values = ['na', '-', '.', ''], low_memory=False)
-
 start_date = df_i['%datum'].iloc[0]
 end_date = df_i['%datum'].iloc[-1]
 
@@ -50,16 +23,10 @@ df['datetime1'] = pd.to_datetime(df['datetime'])
 def add_Feature_Columns(data_frame):
     
     # Add min, hour, day of week (monday = 0) and date
-    data_frame['week_day'] = data_frame['datetime'].dt.weekday
-    data_frame['hour'] = data_frame['datetime'].dt.hour
-    data_frame['minute'] = data_frame['datetime'].dt.minute
-    data_frame['date'] = data_frame['datetime'].dt.date
-    
+    ____
     # Add season (winter = 1)
-    data_frame['season'] = data_frame['datetime'].dt.month
-    data_frame['season'] = data_frame['season'].apply(lambda month: month%12 // 3 + 1) 
-    
-    # Add holiday as weel_day = -1
+    ____
+    # Add holiday as well_day = -1
     now = datetime.datetime.now()
     holidays_nl = holidays.Netherlands(years = list(range(2018, now.year+1)))
     data_frame['holiday'] = data_frame['date'].isin(holidays_nl).astype(int)
@@ -124,11 +91,9 @@ for _, row_t in df.iterrows():
         
 
 # Add the Number of Shifts and rooster_shiftcode_int columns to df
-df['Number of Shifts'] = shift_counts
 
-
+____
 
 #save the df
-df.reset_index(inplace=True)
-df.to_csv('exogenous.csv', index = False)
+___
 
