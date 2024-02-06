@@ -1,23 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Jun 14 14:11:01 2023
-
-@author: k.bartekova
-"""
-
-
-import  scipy.signal.signaltools
-
-def _centered(arr, newsize):
-    # Return the center newsize portion of the array.
-    newsize = np.asarray(newsize)
-    currsize = np.array(arr.shape)
-    startind = (currsize - newsize) // 2
-    endind = startind + newsize
-    myslice = [slice(startind[k], endind[k]) for k in range(len(endind))]
-    return arr[tuple(myslice)]
-
-scipy.signal.signaltools._centered = _centered
 
 
 import pandas as pd
@@ -62,10 +42,10 @@ def denormalize_data(normalized_data, mean, std):
     return denormalized_data
 
 
-data = pd.read_csv('df_t.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
+data = pd.read_csv('____.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
 #data = pd.read_csv('data_exo.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
 #for future exogenous values from intershift data (might be enriched by predicted numbr of calls)
-#exogenous_df = pd.read_csv('exogenous.csv', parse_dates=['datetime'], index_col='datetime', header=0,sep=",")
+#exogenous_df = _____
 
 #normalization 
 #number of calls
@@ -74,15 +54,10 @@ std_c = data['number_of_calls_hr'].std()
 data['number_of_calls_hr_norm'] = (data['number_of_calls_hr'] - mean_c) / std_c
 
 #number of shifts
-mean_s = data['Number of Shifts'].mean()
-std_s = data['Number of Shifts'].std()
-data['Number of Shifts_normalized'] = (data['Number of Shifts'] - mean_s) / std_s
+____
 
 #outcome
-#data['wait_time_hr_av_min'] =  data['wait_time_hr_av_s']/60
-mean_wt = data['wait_time_hr_av_min'].mean()
-std_wt = data['wait_time_hr_av_min'].std()
-data['wait_time_average_normalized'] = (data['wait_time_hr_av_min'] - mean_wt) / std_wt
+_______
 
 
 
@@ -90,8 +65,7 @@ data['wait_time_average_normalized'] = (data['wait_time_hr_av_min'] - mean_wt) /
 dataY = data['wait_time_average_normalized']
 
 dataX = data[['open', 'Day_-1', 'Day_0', 'Day_1',
-       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-       'Season_3', 'Season_4','number_of_calls_hr_norm']]
+       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', _________]]
 #add Number of Shifts_normalized optonal
 
 dataY = data['wait_time_average_normalized']
@@ -117,8 +91,7 @@ dataY.reset_index(drop=True, inplace=True)
 dataY['unique_id'] = 1
 
 
-dataX = dataX[['unique_id','ds','open', 'Day_-1', 'Day_0', 'Day_1',
-       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'number_of_calls_hr_norm']]
+dataX = dataX[['unique_id','ds',________]]
 
 dataX['unique_id'] = dataX.unique_id.astype(str)
 
@@ -208,10 +181,6 @@ season_order = (SAR, D, SMA, season_m)
 ##Append new data for prediction, data needs to come right after old data
 #applies fitted SARIMAX model to a new time series
 
-##load df_t (new data that we want to append with exog variables, make sure the variables in it match)
-#df_t = df_t[['wait_time_average_normalized', 'open', 'Day_-1', 'Day_0', 'Day_1',
-#       'Day_2', 'Day_3', 'Day_4', 'Day_5', 'Day_6', 'Season_1', 'Season_2',
-#       'Season_3', 'Season_4','number_of_calls_hr_n']]
 
     #make sure the data follows right after the data used for training the model
 #last_index_df1 = train.index.max()
